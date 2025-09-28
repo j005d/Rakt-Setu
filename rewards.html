@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Raktsetu - Rewards</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    /* Global Variables */
+    :root {
+      --primary: #ea2a33;
+      --secondary: #6b5b95;
+      --accent: #17bebb;
+      --base: #f7f8fc;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --dark: #1f2937;
+      --light: #f8fafc;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Lexend", sans-serif;
+      background: var(--base);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* Enhanced Navbar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 3rem;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 1.5rem;
+    }
+
+    .heartbeat {
+      color: var(--primary);
+      animation: heartbeat 1.5s infinite;
+      font-size: 2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: inherit;
+    }
+
+    .btn.primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn.primary:hover {
+      background: #c91f28;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(234, 42, 51, 0.3);
+    }
+
+    .btn.secondary {
+      border: 2px solid var(--primary);
+      background: transparent;
+      color: var(--primary);
+    }
+
+    .btn.glass {
+      background: rgba(255,255,255,0.25);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    
+    .content-page {
+      padding-top: 120px;
+      padding-bottom: 4rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      min-height: 100vh;
+    }
+    
+    /* Rewards Section */
+    .rewards-section {
+      background: linear-gradient(135deg, var(--success), #16a34a);
+      color: white;
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 3rem;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .badges-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .badge-item {
+      background: rgba(255,255,255,0.2);
+      border-radius: 16px;
+      padding: 1rem;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .badge-item:hover {
+      background: rgba(255,255,255,0.3);
+      transform: scale(1.05);
+    }
+
+    .badge-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--dark);
+    }
+    
+    /* Language Selector */
+    .language-selector {
+      position: relative;
+    }
+
+    .language-dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      padding: 0.5rem 0;
+      min-width: 150px;
+      display: none;
+      z-index: 1001;
+    }
+
+    .language-option {
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .language-option:hover {
+      background: var(--base);
+      color: var(--primary);
+    }
+
+    /* Animations */
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--success);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      font-weight: 500;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s ease;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .toast.error {
+      background: var(--danger);
+    }
+    .toast.info {
+      background: var(--secondary);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 1rem;
+      }
+      
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">
+      <span class="material-symbols-outlined heartbeat">favorite</span>
+      <h2>Raktsetu</h2>
+    </div>
+    <nav class="nav-links">
+       <a href="index.html">Home</a>
+      <a href="index.html#search">Find Donors</a>
+      <a href="index.html#emergency">Emergency</a>
+      <a href="rewards.html">Rewards</a>
+      <a href="events.html">Events</a>
+      <a href="dashboard.html">Dashboard</a>
+    </nav>
+    <div class="nav-actions">
+      <div class="language-selector">
+        <button class="btn glass" id="languageBtn">
+          <i class="fas fa-globe"></i> EN
+        </button>
+        <div class="language-dropdown" id="languageDropdown">
+          <div class="language-option" data-lang="en">🇺🇸 English</div>
+          <div class="language-option" data-lang="hi">🇮🇳 हिंदी</div>
+          <div class="language-option" data-lang="es">🇪🇸 Español</div>
+          <div class="language-option" data-lang="fr">🇫🇷 Français</div>
+        </div>
+      </div>
+      <button class="btn primary" onclick="openModal('loginModal')">
+        <i class="fas fa-user"></i> Login
+      </button>
+    </div>
+  </header>
+
+  <div class="content-page">
+    <section class="rewards-section" id="rewards">
+      <h2><i class="fas fa-trophy"></i> Rewards & Recognition</h2>
+      <p>Earn points, unlock badges, and get recognition for your life-saving contributions</p>
+      
+      <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; margin-top: 2rem;">
+        <div style="text-align: center;">
+          <div style="font-size: 3rem; font-weight: bold; margin-bottom: 1rem;">2,450</div>
+          <div>Reward Points</div>
+          <button class="btn" style="background: white; color: var(--success); margin-top: 1rem;">
+            <i class="fas fa-gift"></i> Redeem Points
+          </button>
+        </div>
+        <div class="badges-grid">
+          <div class="badge-item">
+            <div class="badge-icon">🏆</div>
+            <div>Hero</div>
+          </div>
+           <div class="badge-item">
+            <div class="badge-icon">🩸</div>
+            <div>Free Health Checkup</div>
+          </div>
+          <div class="badge-item">
+            <div class="badge-icon">⭐</div>
+            <div>Star Donor</div>
+          </div>
+          <div class="badge-item">
+            <div class="badge-icon">🔥</div>
+            <div>Streak Master</div>
+          </div>
+          <div class="badge-item">
+            <div class="badge-icon">💎</div>
+            <div>Diamond Donor</div>
+          </div>
+          <div class="badge-item">
+            <div class="badge-icon">🌟</div>
+            <div>Community Leader</div>
+          </div>
+          <div class="badge-item">
+            <div class="badge-icon">🎯</div>
+            <div>Emergency Hero</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal" id="loginModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('loginModal')">×</button>
+      <h2><i class="fas fa-sign-in-alt"></i> Login to Raktsetu</h2>
+      <form id="loginForm">
+        <div style="margin-bottom: 1rem;">
+          <input type="email" class="form-control" placeholder="Email Address" required>
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <input type="password" class="form-control" placeholder="Password" required>
+        </div>
+        <button type="submit" class="btn primary" style="width: 100%;">
+          <i class="fas fa-sign-in-alt"></i> Login
+        </button>
+      </form>
+      <p style="text-align: center; margin-top: 1rem;">
+        Don't have an account? <a href="#" onclick="openModal('donorModal'); closeModal('loginModal');">Sign up</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="modal" id="donorModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('donorModal')">×</button>
+      <h2><i class="fas fa-user-plus"></i> Join as Donor</h2>
+      <form id="donorForm">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          <input type="text" class="form-control" placeholder="Full Name" required>
+          <input type="email" class="form-control" placeholder="Email" required>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          <input type="tel" class="form-control" placeholder="Phone Number" required>
+          <select class="form-control" required>
+            <option value="">Blood Group</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+          </select>
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <input type="text" class="form-control" placeholder="City, State" required>
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <label style="display: flex; align-items: center; gap: 0.5rem;">
+            <input type="checkbox" required>
+            I agree to health verification and terms of service
+          </label>
+        </div>
+        <button type="submit" class="btn primary" style="width: 100%;">
+          <i class="fas fa-heart"></i> Register as Donor
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="emergencyModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('emergencyModal')">×</button>
+      <h2 style="color: var(--danger);"><i class="fas fa-exclamation-triangle"></i> Emergency Blood Request</h2>
+      <form id="emergencyForm">
+        <div style="margin-bottom: 1rem;">
+          <select class="form-control" required>
+            <option value="">Required Blood Group</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+          </select>
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <input type="number" class="form-control" placeholder="Units Required" min="1" required>
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <input type="text" class="form-control" placeholder="Hospital Name" required>
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <input type="text" class="form-control" placeholder="Hospital Address" required>
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <input type="tel" class="form-control" placeholder="Emergency Contact" required>
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <textarea class="form-control" rows="3" placeholder="Additional Details (Patient condition, urgency level)"></textarea>
+        </div>
+        <button type="submit" class="btn" style="width: 100%; background: var(--danger); color: white;">
+          <i class="fas fa-broadcast-tower"></i> Send Emergency Alert
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMessage">Success!</span>
+  </div>
+
+  <script>
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toastMessage');
+      
+      toast.className = `toast ${type}`;
+      toastMessage.textContent = message;
+      
+      const icon = toast.querySelector('i');
+      switch(type) {
+        case 'success':
+          icon.className = 'fas fa-check-circle';
+          break;
+        case 'error':
+          icon.className = 'fas fa-exclamation-circle';
+          break;
+        case 'info':
+          icon.className = 'fas fa-info-circle';
+          break;
+        default:
+          icon.className = 'fas fa-check-circle';
+      }
+      
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 4000);
+    }
+    
+    // Close modals when clicking outside
+    window.onclick = function(event) {
+      const modals = document.querySelectorAll('.modal');
+      modals.forEach(modal => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+          document.body.style.overflow = 'auto';
+        }
+      });
+    }
+
+    // Add navbar scroll effect
+    let lastScrollTop = 0;
+    window.addEventListener('scroll', function() {
+      const navbar = document.querySelector('.navbar');
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      
+      if (scrollTop > lastScrollTop) {
+        navbar.style.transform = 'translateY(-100%)';
+      } else {
+        navbar.style.transform = 'translateY(0)';
+      }
+      
+      if (scrollTop > 100) {
+        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+        navbar.style.backdropFilter = 'blur(20px)';
+      } else {
+        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+        navbar.style.backdropFilter = 'blur(10px)';
+      }
+      
+      lastScrollTop = scrollTop;
+    });
+
+  </script>
+</body>
+</html>
