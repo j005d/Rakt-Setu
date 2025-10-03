@@ -68,19 +68,8 @@ Rakt Setu is a **smart, secure, and inclusive blood-donor platform** built for r
 
 ---
 
-## 🤝 Contributing  
-
-We welcome contributions!  
-1. Fork this repo  
-2. Create your feature branch (`git checkout -b feature-xyz`)  
-3. Commit your changes (`git commit -m 'Add new feature'`)  
-4. Push to the branch (`git push origin feature-xyz`)  
-5. Open a Pull Request  
-
----
-
 ## 📜 License  
 
-This project is licensed under the **MIT License** – feel free to use and improve with proper attribution.  
+This project is licensed under the **MIT License** 
 
 ---
